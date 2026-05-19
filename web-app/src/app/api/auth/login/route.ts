@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { decodeJwt } from "jose";
 import { login as apiLogin } from "@/lib/api";
 
 /**
@@ -21,21 +22,27 @@ export async function POST(request: Request) {
 
     // Call the actual backend
     const response = await apiLogin(email, password);
+    const payload = decodeJwt(response.access_token);
+    const role = typeof payload.role === "string" ? payload.role : "student";
 
     // Set the httpOnly cookie
-    // Security: httpOnly=true prevents XSS access, 
-    // secure=true (in production) ensures HTTPS, 
-    // sameSite='lax' balances CSRF and usability.
     const cookieStore = cookies();
     cookieStore.set("access_token", response.access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24, // 24 hours (matches JWT expiry)
+      maxAge: 60 * 60 * 24,
     });
 
-    return NextResponse.json({ message: "Login successful" });
+    const redirectTo =
+      role === "admin" || role === "super_admin"
+        ? "/admin"
+        : role === "teacher"
+          ? "/teacher"
+          : "/dashboard";
+
+    return NextResponse.json({ message: "Login successful", redirectTo });
   } catch (error: any) {
     return NextResponse.json(
       { detail: error.message || "Authentication failed" },

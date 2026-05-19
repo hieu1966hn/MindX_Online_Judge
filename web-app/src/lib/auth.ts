@@ -35,6 +35,7 @@ const ROUTE_ROLE_REQUIREMENTS: Array<{ prefix: string; minRole: UserRole }> = [
   { prefix: "/admin/", minRole: UserRole.ADMIN },
   { prefix: "/teacher/", minRole: UserRole.TEACHER },
   { prefix: "/student/", minRole: UserRole.STUDENT },
+  { prefix: "/dashboard/", minRole: UserRole.STUDENT },
 ];
 
 // ---------------------------------------------------------------------------

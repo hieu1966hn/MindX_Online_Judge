@@ -43,9 +43,8 @@ export default function LoginForm() {
         throw new Error(body.detail || "Đăng nhập thất bại");
       }
 
-      // Sau khi đăng nhập thành công, redirect tới dashboard
-      // Note: Middleware sẽ handle việc điều hướng đúng trang theo role
-      router.push("/dashboard");
+      const redirectTo = typeof body.redirectTo === "string" ? body.redirectTo : "/dashboard";
+      router.push(redirectTo);
       router.refresh();
     } catch (err: any) {
       setError(err.message);

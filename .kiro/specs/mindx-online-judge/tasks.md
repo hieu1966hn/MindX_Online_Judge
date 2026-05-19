@@ -119,14 +119,14 @@ Kế hoạch triển khai cho **Local-First MVP** của MindX Online Judge.
 
 
 - [ ] 5. Triển khai Auth Router và Users Router
-  - [~] 5.1 Tạo `api-server/app/routers/auth.py` — Auth endpoints
+  - [x] 5.1 Tạo `api-server/app/routers/auth.py` — Auth endpoints
     - `POST /api/v1/auth/login`: check rate limit, verify credentials, trả về TokenResponse; reset counter sau login thành công; generic error khi sai credentials
     - `POST /api/v1/auth/logout`: thêm `jti` vào in-memory blacklist
     - `POST /api/v1/auth/password-reset/request`: tạo token, lưu SQLite, log ra console; luôn trả về cùng response
     - `POST /api/v1/auth/password-reset/confirm`: validate token từ SQLite, hash mật khẩu mới, cập nhật DB, đánh dấu token đã dùng
     - _Requirements: 1_
 
-  - [~] 5.2 Tạo `api-server/app/routers/users.py` — Users endpoints
+  - [x] 5.2 Tạo `api-server/app/routers/users.py` — Users endpoints
     - `GET /api/v1/users/me` — min role: Student
     - `GET /api/v1/users/` — min role: Admin
     - `POST /api/v1/users/` — min role: Admin; chặn gán `super_admin` nếu actor là Admin
@@ -249,13 +249,13 @@ Kế hoạch triển khai cho **Local-First MVP** của MindX Online Judge.
 
 
 - [ ] 9. Seed data và setup script
-  - [~] 9.1 Tạo `api-server/app/db/seeds.py` — Seed users và seed problem
+  - [x] 9.1 Tạo `api-server/app/db/init_db.py` — Seed users và seed problem
     - 4 seed users: Super Admin, Admin MindX, Giáo viên A, Học sinh B
     - `run_seeds(db)` — kiểm tra email chưa tồn tại trước khi insert
     - Import seed problem từ `problem-packages/sum_two_numbers/` vào DB
     - _Requirements: 9_
 
-  - [~] 9.2 Tạo `api-server/app/db/init_db.py` — Setup script
+  - [x] 9.2 Tạo startup script `start-dev.sh` — Unified dev environment
     - Tạo thư mục `data/` nếu chưa có
     - Chạy `alembic upgrade head`
     - Gọi `run_seeds()`
@@ -320,30 +320,30 @@ Kế hoạch triển khai cho **Local-First MVP** của MindX Online Judge.
     - Role không đủ quyền → redirect `/403`
     - _Requirements: 2_
 
-  - [~] 12.2 Tạo `web-app/src/components/auth/LoginForm.tsx`
+  - [x] 12.2 Tạo `web-app/src/components/auth/LoginForm.tsx`
     - `react-hook-form` + `zod` validation
     - Submit → Next.js API route `/api/auth/login` → set httpOnly cookie
     - Toast error khi API lỗi; redirect dashboard sau login thành công
     - _Requirements: 1_
 
-  - [~] 12.3 Tạo Next.js API routes cho auth
+  - [x] 12.3 Tạo Next.js API routes cho auth
     - `web-app/src/app/api/auth/login/route.ts` — forward tới FastAPI, set httpOnly cookie
     - `web-app/src/app/api/auth/logout/route.ts` — gọi FastAPI logout, xóa cookie
     - _Requirements: 1_
 
-  - [~] 12.4 Tạo `web-app/src/components/auth/AuthGuard.tsx`
+  - [x] 12.4 Tạo `web-app/src/components/auth/AuthGuard.tsx`
     - Client-side HOC kiểm tra token expiry
     - Token hết hạn → redirect `/login`
     - _Requirements: 1, 2_
 
 - [ ] 13. Triển khai các trang Auth và Dashboard
-  - [~] 13.1 Tạo auth pages
+  - [x] 13.1 Tạo auth pages
     - `(auth)/login/page.tsx` — render LoginForm
     - `(auth)/forgot-password/page.tsx` — form nhập email, luôn hiển thị cùng thông báo
     - `(auth)/reset-password/page.tsx` — đọc token từ URL, form mật khẩu mới
     - _Requirements: 1_
 
-  - [~] 13.2 Tạo protected layout và dashboard pages
+  - [x] 13.2 Tạo protected layout và dashboard pages
     - `(protected)/layout.tsx` — kiểm tra cookie, redirect `/login` nếu không có
     - `(protected)/dashboard/page.tsx` — redirect theo role
     - `(protected)/student/dashboard/page.tsx` — "Chào mừng [name]! Role: Student" + nút Logout
