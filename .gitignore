@@ -23,6 +23,12 @@ api-server/data/*.db-wal
 storage/submissions/*
 !storage/submissions/.gitkeep
 
+# Local virtual environments
+venv/
+.venv/
+**/venv/
+**/.venv/
+
 # Node.js
 node_modules/
 .next/
