@@ -1,0 +1,14 @@
+# Judge Worker dependencies
+# Phase 5 will add execution sandbox, language runners, etc.
+
+# Message queue / task queue
+celery==5.3.6
+redis==5.0.1
+
+# Database
+sqlalchemy==2.0.30
+psycopg2-binary==2.9.9
+
+# Configuration
+python-dotenv==1.0.1
+pydantic-settings==2.2.1

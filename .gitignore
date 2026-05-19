@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.env
+
+# SQLite database (local dev only)
+api-server/data/*.db
+api-server/data/*.db-shm
+api-server/data/*.db-wal
+
+# Uploaded files / storage
+storage/submissions/*
+!storage/submissions/.gitkeep
+
+# Node.js
+node_modules/
+.next/
+out/
+.npm
+*.tsbuildinfo
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+
+# Alembic
+api-server/app/db/migrations/versions/*.pyc

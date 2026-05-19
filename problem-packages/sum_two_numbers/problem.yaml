@@ -1,0 +1,6 @@
+code: sum_two_numbers
+title: "Tổng hai số"
+time_limit_ms: 1000
+memory_limit_mb: 256
+allowed_languages: [python3, cpp17, cpp20]
+scoring_mode: all_or_nothing
