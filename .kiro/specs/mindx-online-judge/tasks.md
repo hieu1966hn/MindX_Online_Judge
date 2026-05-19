@@ -358,45 +358,46 @@ Kế hoạch triển khai cho **Local-First MVP** của MindX Online Judge.
     - _Requirements: 8_
 
 
-- [ ] 14. Triển khai Problem pages (Teacher + Student)
-  - [~] 14.1 Tạo Teacher problem management pages
+- [x] 14. Triển khai Problem pages (Teacher + Student)
+  - [x] 14.1 Tạo Teacher problem management pages
     - `(protected)/teacher/problems/page.tsx` — danh sách problems của teacher
     - `(protected)/teacher/problems/new/page.tsx` — form tạo problem mới (title, code, limits, languages)
     - `(protected)/teacher/problems/[id]/edit/page.tsx` — chỉnh sửa problem
     - `(protected)/teacher/problems/[id]/testcases/page.tsx` — upload statement + testcase ZIP/pairs
     - _Requirements: 4, 8_
 
-  - [~] 14.2 Tạo Student problem pages
+  - [x] 14.2 Tạo Student problem pages
     - `(protected)/student/problems/page.tsx` — danh sách visible problems
     - `(protected)/student/problems/[id]/page.tsx` — problem detail: statement, constraints, sample testcases, code editor
     - _Requirements: 3, 5_
 
-  - [~] 14.3 Tạo `components/editor/CodeEditor.tsx` — Monaco Editor wrapper
+  - [x] 14.3 Tạo `components/editor/CodeEditor.tsx` — Monaco Editor wrapper
     - Hỗ trợ language switching (python, cpp)
     - File upload button: load `.py`/`.cpp` vào editor
     - Reject file > 64KB với error message
     - _Requirements: 5_
 
-  - [~] 14.4 Tạo `components/editor/SubmitButton.tsx` và submission flow
+  - [x] 14.4 Tạo `components/editor/SubmitButton.tsx` và submission flow
     - Submit button → POST `/api/v1/submissions/`
     - Hiển thị verdict PD → polling mỗi 2s → cập nhật khi có kết quả
     - Hiển thị `VerdictBadge` (AC=green, WA=red, TLE=orange, RE=purple, CE=gray)
     - _Requirements: 5, 6, 7_
 
-- [ ] 15. Triển khai Submission History pages
-  - [~] 15.1 Tạo `(protected)/student/problems/[id]/submissions/page.tsx`
+- [x] 15. Triển khai Submission History pages
+  - [x] 15.1 Tạo `(protected)/student/problems/[id]/submissions/page.tsx`
     - Danh sách submissions của student cho problem này (25/page)
     - Mỗi row: verdict badge, language, thời gian nộp
     - _Requirements: 7_
 
-  - [~] 15.2 Tạo `(protected)/student/submissions/[id]/page.tsx` — Submission detail
+  - [x] 15.2 Tạo `(protected)/student/submissions/[id]/page.tsx` — Submission detail
     - Verdict, language, thời gian, compile error (nếu CE)
     - Per-testcase results: index, verdict, runtime (ẩn hidden testcase output)
     - _Requirements: 7_
 
-  - [~] 15.3 Tạo `(protected)/admin/submissions/page.tsx` — Admin view
+  - [x] 15.3 Tạo `(protected)/admin/submissions/page.tsx` — Admin view
     - Tất cả submissions (50/page), filter theo problem/user
     - _Requirements: 8_
+
 
 
 - [ ] 16. Viết frontend tests
