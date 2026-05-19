@@ -25,10 +25,13 @@ export async function POST(request: Request) {
     const payload = decodeJwt(response.access_token);
     const role = typeof payload.role === "string" ? payload.role : "student";
 
-    // Set the httpOnly cookie
     const cookieStore = cookies();
     cookieStore.set("access_token", response.access_token, {
-      httpOnly: true,
+      // MVP note: browser-side API client reads this cookie to attach
+      // Authorization headers when calling the FastAPI backend directly.
+      // For production, replace this with Next.js BFF API routes and make
+      // the token httpOnly again.
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",

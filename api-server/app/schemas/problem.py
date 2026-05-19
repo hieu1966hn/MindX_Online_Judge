@@ -1,10 +1,11 @@
 """
 Pydantic V2 schemas for Problem resources.
 """
+import json
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ProblemYaml(BaseModel):
@@ -31,6 +32,29 @@ class ProblemBase(BaseModel):
     allowed_languages: list[str] = Field(default_factory=lambda: ["python3"])
     scoring_mode: str = "all_or_nothing"
     is_visible: bool = True
+
+    @field_validator("allowed_languages", mode="before")
+    @classmethod
+    def normalize_allowed_languages(cls, value: Any) -> list[str]:
+        if isinstance(value, list):
+            return [str(item) for item in value]
+
+        if isinstance(value, str):
+            raw = value.strip()
+            if not raw:
+                return []
+
+            if raw.startswith("["):
+                try:
+                    parsed = json.loads(raw)
+                    if isinstance(parsed, list):
+                        return [str(item) for item in parsed]
+                except json.JSONDecodeError:
+                    pass
+
+            return [item.strip() for item in raw.split(",") if item.strip()]
+
+        return value
 
 
 class ProblemCreate(ProblemBase):
