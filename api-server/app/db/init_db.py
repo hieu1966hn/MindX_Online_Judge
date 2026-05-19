@@ -21,6 +21,7 @@ from app.db.base import Base
 from app.db.session import engine
 from app.models.user import User, UserRole
 from app.models.problem import Problem
+from app.models.submission import Submission
 from app.core.security import hash_password
 from sqlalchemy.orm import Session
 import uuid

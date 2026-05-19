@@ -1,48 +1,52 @@
-"""
-SQLAlchemy ORM model for programming problems.
-"""
-import uuid
-from datetime import datetime, timezone
-
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import String, Integer, Boolean, Text, Enum as SAEnum
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.sql import func
+from datetime import datetime
+import enum
+from typing import List, Optional
 
 from app.db.base import Base
 
+class ProblemDifficulty(str, enum.Enum):
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
+
+class ScoringMode(str, enum.Enum):
+    ALL_OR_NOTHING = "all_or_nothing"  # Chỉ AC khi đúng hết 100% testcases
+    PARTIAL = "partial"               # Tính điểm theo tỷ lệ testcases đúng
 
 class Problem(Base):
-    """Problem metadata stored in SQLite for the local-first MVP."""
-
     __tablename__ = "problems"
 
-    id: Mapped[str] = mapped_column(
-        String(36),
-        primary_key=True,
-        default=lambda: str(uuid.uuid4()),
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, index=True)
+    code: Mapped[str] = mapped_column(String(50), unique=True, index=True)  # VD: SUM2NUM
+    title: Mapped[str] = mapped_column(String(255))
+    difficulty: Mapped[ProblemDifficulty] = mapped_column(
+        SAEnum(ProblemDifficulty), default=ProblemDifficulty.MEDIUM
     )
-    code: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
-    statement_md: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    time_limit_ms: Mapped[int] = mapped_column(Integer, nullable=False, default=1000)
-    memory_limit_mb: Mapped[int] = mapped_column(Integer, nullable=False, default=256)
-    allowed_languages: Mapped[str] = mapped_column(Text, nullable=False, default='["python3"]')
-    scoring_mode: Mapped[str] = mapped_column(String(50), nullable=False, default="all_or_nothing")
-    is_visible: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
-    is_archived: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    package_path: Mapped[str] = mapped_column(String(500), nullable=False)
-    created_by: Mapped[str] = mapped_column(
-        String(36),
-        ForeignKey("users.id"),
-        nullable=False,
+    
+    # Nội dung bài tập
+    statement_md: Mapped[Optional[str]] = mapped_column(Text)
+    
+    # Giới hạn kỹ thuật
+    time_limit_ms: Mapped[int] = mapped_column(Integer, default=1000)
+    memory_limit_mb: Mapped[int] = mapped_column(Integer, default=256)
+    
+    # Cấu hình chấm bài
+    scoring_mode: Mapped[ScoringMode] = mapped_column(
+        SAEnum(ScoringMode), default=ScoringMode.ALL_OR_NOTHING
     )
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        nullable=False,
-        default=lambda: datetime.now(timezone.utc),
-    )
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        nullable=False,
-        default=lambda: datetime.now(timezone.utc),
-        onupdate=lambda: datetime.now(timezone.utc),
-    )
+    allowed_languages: Mapped[str] = mapped_column(Text, default="c++,python") # Lưu dạng comma-separated
+    
+    # Metadata & Filesystem
+    package_path: Mapped[Optional[str]] = mapped_column(String(512)) # Path tới problem-packages/
+    is_visible: Mapped[bool] = mapped_column(Boolean, default=True)
+    is_archived: Mapped[bool] = mapped_column(Boolean, default=False)
+    
+    created_by: Mapped[str] = mapped_column(String(36))
+    created_at: Mapped[datetime] = mapped_column(default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(default=func.now(), onupdate=func.now())
+
+    def __repr__(self):
+        return f"<Problem {self.code}: {self.title}>"
